@@ -1,0 +1,115 @@
+-- โหลด Library ของ Rayfield
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- สร้าง Window หลัก
+local Window = Rayfield:CreateWindow({
+   Name = "Auto Buy Script",
+   LoadingTitle = "กำลังโหลดระบบ...",
+   LoadingSubtitle = "โดย AI Collaborator",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil,
+      FileName = "AutoBuyConfig"
+   },
+   KeySystem = false,
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining a key is provided.",
+      FileName = "Key",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+      Key = {"1234"}
+   }
+})
+
+-- สร้าง Tab หน้าต่าง
+local Tab = Window:CreateTab("ฟังก์ชันหลัก", 4483362458)
+
+-- ตัวแปรควบคุมสถานะเปิด/ปิด (Magic Mushroom Seed)
+local autoBuySeedActive = false
+
+-- สร้าง Toggle ซื้อเมล็ด
+Tab:CreateToggle({
+   Name = "เปิด/ปิด ซื้อ Magic Mushroom Seed อัตโนมัติ",
+   CurrentValue = false,
+   Flag = "AutoBuySeedToggle",
+   Callback = function(Value)
+      autoBuySeedActive = Value
+      
+      if autoBuySeedActive then
+         Rayfield:Notify({
+            Title = "แจ้งเตือน",
+            Content = "เปิดระบบซื้อ Magic Mushroom Seed แล้ว!",
+            Duration = 3,
+            Image = 4483362458,
+         })
+         
+         task.spawn(function()
+            while autoBuySeedActive do
+               local args = {
+                  "Magic Mushroom Seed",
+                  0
+               }
+               
+               pcall(function()
+                  game:GetService("ReplicatedStorage"):WaitForChild("BuySeedRequest"):FireServer(unpack(args))
+               end)
+               
+               task.wait(0.5)
+            end
+         end)
+      else
+         Rayfield:Notify({
+            Title = "แจ้งเตือน",
+            Content = "ปิดระบบซื้อ Magic Mushroom Seed แล้ว!",
+            Duration = 3,
+            Image = 4483362458,
+         })
+      end
+   end,
+})
+
+-- ตัวแปรควบคุมสถานะเปิด/ปิด (Growth Booster)
+local autoBuyBoosterActive = false
+
+-- สร้าง Toggle ซื้อบูสเตอร์
+Tab:CreateToggle({
+   Name = "เปิด/ปิด ซื้อ Growth Booster อัตโนมัติ",
+   CurrentValue = false,
+   Flag = "AutoBuyBoosterToggle",
+   Callback = function(Value)
+      autoBuyBoosterActive = Value
+      
+      if autoBuyBoosterActive then
+         Rayfield:Notify({
+            Title = "แจ้งเตือน",
+            Content = "เปิดระบบซื้อ Growth Booster แล้ว!",
+            Duration = 3,
+            Image = 4483362458,
+         })
+         
+         task.spawn(function()
+            while autoBuyBoosterActive do
+               local args = {
+                  "Growth Booster",
+                  0
+               }
+               
+               pcall(function()
+                  game:GetService("ReplicatedStorage"):WaitForChild("BuyBoosterRequest"):FireServer(unpack(args))
+               end)
+               
+               task.wait(0.5)
+            end
+         end)
+      else
+         Rayfield:Notify({
+            Title = "แจ้งเตือน",
+            Content = "ปิดระบบซื้อ Growth Booster แล้ว!",
+            Duration = 3,
+            Image = 4483362458,
+         })
+      end
+   end,
+})
